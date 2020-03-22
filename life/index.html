@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Color your Life!</title>
+  <!--<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">-->
+  <!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+			<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif]-->
+  <script type="text/javascript">
+    M = 90;
+    N = 60;
+    var a = Array.apply(null, Array((N + 2) * (M + 2))).map(function() {
+      return 0
+    });
+    var b = Array.apply(null, Array((N + 2) * (M + 2))).map(function() {
+      return 0
+    });
+    var timer;
+
+    function superChojukuPiece(x, y) {
+    a[(0 + x) * M + 4 + y] = 1;
+    a[(0 + x) * M + 10 + y] = 1;
+    a[(0 + x) * M + 26 + y] = 1;
+    a[(0 + x) * M + 32 + y] = 1;
+    a[(1 + x) * M + 3 + y] = 1;
+    a[(1 + x) * M + 9 + y] = 1;
+    a[(1 + x) * M + 11 + y] = 1;
+    a[(1 + x) * M + 25 + y] = 1;
+    a[(1 + x) * M + 27 + y] = 1;
+    a[(1 + x) * M + 33 + y] = 1;
+    a[(2 + x) * M + 2 + y] = 1;
+    a[(2 + x) * M + 10 + y] = 1;
+    a[(2 + x) * M + 26 + y] = 1;
+    a[(2 + x) * M + 34 + y] = 1;
+    a[(3 + x) * M + 2 + y] = 1;
+    a[(3 + x) * M + 3 + y] = 1;
+    a[(3 + x) * M + 4 + y] = 1;
+    a[(3 + x) * M + 5 + y] = 1;
+    a[(3 + x) * M + 6 + y] = 1;
+    a[(3 + x) * M + 7 + y] = 1;
+    a[(3 + x) * M + 14 + y] = 1;
+    a[(3 + x) * M + 34 + y] = 1;
+    a[(4 + x) * M + 2 + y] = 1;
+    a[(4 + x) * M + 13 + y] = 1;
+    a[(4 + x) * M + 18 + y] = 1;
+    a[(4 + x) * M + 23 + y] = 1;
+    a[(4 + x) * M + 34 + y] = 1;
+    a[(5 + x) * M + 2 + y] = 1;
+    a[(5 + x) * M + 3 + y] = 1;
+    a[(5 + x) * M + 4 + y] = 1;
+    a[(5 + x) * M + 5 + y] = 1;
+    a[(5 + x) * M + 6 + y] = 1;
+    a[(5 + x) * M + 7 + y] = 1;
+    a[(5 + x) * M + 13 + y] = 1;
+    a[(5 + x) * M + 17 + y] = 1;
+    a[(5 + x) * M + 19 + y] = 1;
+    a[(5 + x) * M + 23 + y] = 1;
+    a[(5 + x) * M + 33 + y] = 1;
+    a[(6 + x) * M + 3 + y] = 1;
+    a[(6 + x) * M + 14 + y] = 1;
+    a[(6 + x) * M + 16 + y] = 1;
+    a[(6 + x) * M + 20 + y] = 1;
+    a[(6 + x) * M + 22 + y] = 1;
+    a[(6 + x) * M + 32 + y] = 1;
+    a[(7 + x) * M + 5 + y] = 1;
+    a[(7 + x) * M + 15 + y] = 1;
+    a[(7 + x) * M + 21 + y] = 1;
+    a[(7 + x) * M + 31 + y] = 1;
+    }
+
+    function nebraPiece(x, y) {
+      for (var i = 0; i < 6; i++) {
+        a[(4 + y) * M + 4 + i + x] = 1;
+        a[(5 + y) * M + 4 + i + x] = 1;
+        a[(4 + i + y) * M + 11 + x] = 1;
+        a[(4 + i + y) * M + 12 + x] = 1;
+        a[(11 + y) * M + 7 + i + x] = 1;
+        a[(12 + y) * M + 7 + i + x] = 1;
+        a[(7 + i + y) * M + 4 + x] = 1;
+        a[(7 + i + y) * M + 5 + x] = 1;
+      }
+    }
+                          
+    function samplePiece() {
+   a[(N / 2) * M + M / 2] = a[(N / 2 - 1) * M + M / 2] = a[(N / 2 + 1) * M + M / 2] = a[(N / 2) * M + M / 2 - 1] = a[(N / 2 - 1) * M + M / 2 + 1] = 1;
+    }
+                          
+    function autoTakeStep(form) {
+      document.getElementById("infoLabel").innerText = 'start!';
+      timer = setInterval("takeStep()", 200);
+      form.btn0.value = "stop";
+      form.btn0.onclick = new Function("stopStep(this.form)");
+    }
+
+    function stopStep(form) {
+      clearInterval(timer);
+      form.btn0.value = "auto";
+      form.btn0.onclick = new Function("autoTakeStep(this.form)");
+    }
+
+    function takeStep() {
+      var canvas = document.getElementById('plain');
+      var ctx = canvas.getContext('2d');
+      ctx.beginPath();
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (var i = 1; i < N + 1; i++) {
+        for (var j = 1; j < M + 1; j++) {
+          if (a[i * M + j]) {
+            //var colorStyle = 'rgb(' + String(r) + ',' + String(g) + ',' + String(b) + ')';
+            //ctx.fillStyle = 'rgb(128, 100, 162)';
+            ctx.fillStyle = 'rgb(' + (Math.floor(255-6.5*i))%255 + ',' +
+                      (Math.floor(255-5.5*j))%255 + ',180)';
+            ctx.fillRect(10 * j, 10 * i, 10, 10);
+            b[(i - 1) * M + j - 1]++;
+            b[(i - 1) * M + j]++;
+            b[(i - 1) * M + j + 1]++;
+            b[i * M + j - 1]++;
+            b[i * M + j + 1]++;
+            b[(i + 1) * M + j - 1]++;
+            b[(i + 1) * M + j]++;
+            b[(i + 1) * M + j + 1]++;
+          } else {
+            ctx.beginPath();
+            ctx.lineWidth = 0.2;
+            ctx.strokeStyle = 'rgb(128, 100, 162)';
+            ctx.strokeRect(10 * j, 10 * i, 10, 10);
+          }
+        }
+      }
+      for (var i = 0; i < N + 2; i++) {
+        for (var j = 0; j < M + 2; j++) {
+          if (b[i * M + j] != 2) {
+            a[i * M + j] = (b[i * M + j] == 3);
+          }
+          b[i * M + j] = 0;
+        }
+      }
+    }
+
+    function main() {
+      nebraPiece(0,0);nebraPiece(15,0);
+      nebraPiece(30,0);nebraPiece(45,0);
+      nebraPiece(60,0);nebraPiece(75,0);
+      nebraPiece(0,20);nebraPiece(0,40);
+     // nebraPiece(30,30);
+      superChojukuPiece(30, 20);
+      takeStep();
+      setTimeout("autoTakeStep(this.form)", 3000);
+    }
+  </script>
+</head>
+
+<body onLoad="main()">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <h3>Color your Life!　<label id="infoLabel" style = "color: #0055cc;">wait (:<b>3</b> seconds</label></h3>
+      </div>
+      <div class="col-md-9">
+        <canvas id="plain" width="900" height="600"></canvas>
+      </div>
+      <div class="col-md-3">
+        <form name="operators">
+          <input class="btm btn-primary" type="button" name="btn0" value="stop" onclick="stopStep(this.form)">
+          <input class="btm btn-default" type="button" name="btn1" value="take a step" onclick="takeStep()">
+        </form>
+      </div>
+    </div>
+  </div>
+  <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>-->
+  <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>-->
+</body>
+
+</html>

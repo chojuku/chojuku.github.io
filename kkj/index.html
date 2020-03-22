@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="ja">
+
+<head>
+  <meta charset="utf-8">
+  <title>官公需数比較</title>
+  <script src="Chart.min.js"></script>
+</head>
+
+<body>
+  <canvas id="testCanvas">
+      <canvas id="myBarChart" width="800" height="400"></canvas>
+  <script>
+    var testContext = document.getElementById("testCanvas").getContext("2d");
+    var test_chart = new Chart(testContext, {
+      type: 'bar',
+      data: {
+        labels: ["内閣府", "宮内庁", "警察庁", "金融庁", "消費者庁", "復興庁", "総務省", "消防庁", "法務省", "検察庁", "公安調査庁", "外務省", "財務省", "国税庁", "文部科学省", "文化庁", "スポーツ庁", "厚生労働省", "農林水産省", "林野庁", "水産庁", "経済産業省", "資源エネルギー庁", "特許庁", "中小企業庁", "国土交通省", "観光庁", "気象庁", "海上保安庁",
+          "環境省", "防衛省", "防衛装備庁"
+        ],
+        datasets: [{
+          label: '官公需数',
+          data: [2823, 552, 14899, 663, 206, 165, 4741, 1124, 27279, 1209, 31, 709, 16127, 3655, 1135, 184, 14, 53105, 25060, 10947, 52, 3044, 573, 610, 0, 64767, 0, 2477, 7487, 4751, 96943, 8260]
+        }]
+      }
+    });
+  </script>
+    <p>2017/10/14取得</p>
+</body>
+
+</html>
